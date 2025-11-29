@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Layout from './Layout';
-import Login from './Login';
-import Dashboard from './Dashboard';
-import Settings from './Settings';
-import Help from './Help';
-import About from './About';
+import Layout from './layout';
+import Login from './login';
+import Dashboard from './dashboard';
+import Settings from './settings';
+import Help from './help';
+import About from './about';
 
 // A wrapper to protect routes (ensure user is "logged in")
 const ProtectedRoute = ({ children }) => {
