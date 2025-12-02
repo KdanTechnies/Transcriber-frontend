@@ -7,10 +7,11 @@
   --text-main: #ffffff;
   --text-muted: #a1a1aa;
   --border: #333;
-  --sidebar-width: 260px; /* Variable for easier resizing */
+  --danger: #ff4d4d;
+  --sidebar-width: 260px;
 }
 
-/* Global Reset for better layout behavior */
+/* Global Reset */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -20,7 +21,7 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
-  overflow: hidden; /* App shell handles scroll */
+  overflow: hidden;
 }
 
 /* --- Layout Structure --- */
@@ -40,7 +41,7 @@ body {
   flex-direction: column;
   padding: 1.5rem 1rem;
   transition: width 0.3s ease;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
   z-index: 10;
 }
 
@@ -66,7 +67,7 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   flex: 1;
-  overflow-y: auto; /* Scroll sidebar if menu is too long */
+  overflow-y: auto;
 }
 
 .nav-item {
@@ -101,7 +102,7 @@ body {
 .logout-btn {
   background: none;
   border: none;
-  color: #ff4d4d;
+  color: var(--danger);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -170,16 +171,31 @@ input[type="file"] { display: none; }
 
 .controls-row {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping on small screens */
+  flex-wrap: wrap; 
   gap: 1rem;
   justify-content: center;
   margin-top: 1rem;
 }
 
 .lang-select { padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 6px; min-width: 150px; }
+
 .btn-primary { padding: 0.8rem 1.5rem; background: var(--primary); border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; transition: background 0.2s; }
 .btn-primary:hover { background: var(--primary-hover); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- New Button Style for Settings --- */
+.btn-danger {
+  background-color: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-danger:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+}
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
 .text-card { background: #252525; padding: 1.5rem; border-radius: 8px; height: 100%; }
@@ -187,28 +203,97 @@ input[type="file"] { display: none; }
 .tag { background: #333; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.85rem; display: flex; align-items: center; }
 .tag small { color: var(--primary); margin-left: 6px; font-weight: bold; }
 
-.setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
-.setting-item:last-child { border-bottom: none; }
+
+/* =================================================================
+   ⚙️ SETTINGS PAGE STYLES (NEW)
+   ================================================================= */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.8rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.setting-item { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 1.2rem 0; 
+  border-bottom: 1px solid var(--border); 
+}
+
+.setting-item:last-child { 
+  border-bottom: none; 
+}
+
+.setting-item label {
+  color: #ddd;
+  font-size: 0.95rem;
+}
+
+/* Custom Checkbox Styling for Dark Mode */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  border-radius: 4px;
+  background-color: #222;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Checkmark symbol */
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #333;
+}
 
 
 /* =================================================================
    🚀 RESPONSIVE MEDIA QUERIES
    ================================================================= */
 
-/* 📱 MOBILE PHONES (Portrait & Small Landscape)
-   Break at 768px (Standard Tablet/Mobile Boundary) */
+/* 📱 MOBILE PHONES (Portrait & Small Landscape) */
 @media (max-width: 768px) {
   
-  /* Stack layout vertically */
   .app-shell {
     flex-direction: column;
   }
 
-  /* Turn Sidebar into Top Navigation Bar */
   .sidebar {
     width: 100%;
     height: auto;
-    flex-direction: row; /* Horizontal layout */
+    flex-direction: row; 
     align-items: center;
     padding: 0.8rem 1rem;
     border-right: none;
@@ -216,21 +301,18 @@ input[type="file"] { display: none; }
     justify-content: space-between;
   }
 
-  /* Logo adjustment for top bar */
   .logo-area h2 {
     margin: 0;
     font-size: 1.2rem;
   }
 
-  /* Scrollable horizontal menu */
   .nav-menu {
     flex-direction: row;
-    overflow-x: auto; /* Allow horizontal scroll */
+    overflow-x: auto; 
     padding-left: 1rem;
     padding-right: 1rem;
     gap: 0.5rem;
     align-items: center;
-    /* Hide scrollbar visually but keep functionality */
     scrollbar-width: none; 
     -ms-overflow-style: none;
   }
@@ -241,12 +323,8 @@ input[type="file"] { display: none; }
     font-size: 0.9rem;
   }
   
-  /* On mobile, maybe hide text labels if icons exist, 
-     or keep text small. Here we reduce padding. */
   .nav-item:hover { transform: none; }
 
-  /* Hide Logout on top bar to save space, 
-     or move it to the very end of the scroll */
   .logout-area {
     margin-top: 0;
     border-top: none;
@@ -255,27 +333,24 @@ input[type="file"] { display: none; }
     padding-left: 0.5rem;
   }
   
-  .logout-btn span { display: none; } /* Hide "Logout" text, show icon only */
+  .logout-btn span { display: none; } 
 
-  /* Main Content Adjustments */
   .main-content {
-    padding: 1rem; /* Less padding on mobile */
+    padding: 1rem; 
   }
 
-  /* Stack Grids */
   .grid-2 {
-    grid-template-columns: 1fr; /* 1 Column */
+    grid-template-columns: 1fr; 
     gap: 1rem;
   }
 
-  /* Adjust Controls */
   .controls-row {
     flex-direction: column;
     width: 100%;
   }
   
   .lang-select, .btn-primary, .custom-file-upload {
-    width: 100%; /* Full width buttons/inputs */
+    width: 100%; 
   }
 
   .upload-box {
@@ -283,10 +358,10 @@ input[type="file"] { display: none; }
   }
 }
 
-/* 💻 TABLET / SMALL LAPTOP (769px to 1024px) */
+/* 💻 TABLET / SMALL LAPTOP */
 @media (min-width: 769px) and (max-width: 1024px) {
   :root {
-    --sidebar-width: 200px; /* Slimmer sidebar */
+    --sidebar-width: 200px;
   }
 
   .main-content {
@@ -303,18 +378,18 @@ input[type="file"] { display: none; }
   }
 }
 
-/* 🖥️ LARGE SCREENS / PROJECTORS (1441px +) */
+/* 🖥️ LARGE SCREENS */
 @media (min-width: 1441px) {
   :root {
     --sidebar-width: 320px;
   }
 
   body {
-    font-size: 18px; /* Slightly larger text for reading from distance */
+    font-size: 18px; 
   }
 
   .page-container {
-    max-width: 1400px; /* Use more screen real estate */
+    max-width: 1400px; 
   }
 
   .main-content {
