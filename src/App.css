@@ -7,6 +7,12 @@
   --text-main: #ffffff;
   --text-muted: #a1a1aa;
   --border: #333;
+  --sidebar-width: 260px; /* Variable for easier resizing */
+}
+
+/* Global Reset for better layout behavior */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -21,16 +27,21 @@ body {
 .app-shell {
   display: flex;
   height: 100vh;
+  /* Fix for mobile browsers address bar issue */
+  height: 100dvh; 
   width: 100vw;
 }
 
 .sidebar {
-  width: 250px;
+  width: var(--sidebar-width);
   background-color: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
+  transition: width 0.3s ease;
+  flex-shrink: 0; /* Prevent shrinking */
+  z-index: 10;
 }
 
 .main-content {
@@ -38,13 +49,16 @@ body {
   overflow-y: auto;
   padding: 2rem;
   background-color: var(--bg-dark);
+  position: relative;
+  scroll-behavior: smooth;
 }
 
 /* --- Sidebar Styling --- */
 .logo-area h2 {
   color: var(--primary);
-  margin-bottom: 2rem;
-  padding-left: 0.5rem;
+  margin: 0 0 2rem 0.5rem;
+  font-size: 1.5rem;
+  white-space: nowrap;
 }
 
 .nav-menu {
@@ -52,22 +66,25 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   flex: 1;
+  overflow-y: auto; /* Scroll sidebar if menu is too long */
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 0.8rem 1rem;
   color: var(--text-muted);
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .nav-item:hover {
   background-color: rgba(255, 255, 255, 0.05);
   color: white;
+  transform: translateX(4px);
 }
 
 .nav-item.active {
@@ -90,21 +107,27 @@ body {
   gap: 10px;
   cursor: pointer;
   font-size: 1rem;
-  padding: 0.5rem;
+  padding: 0.8rem 1rem;
   width: 100%;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
-.logout-btn:hover { background-color: rgba(255, 77, 77, 0.1); border-radius: 6px; }
+.logout-btn:hover { background-color: rgba(255, 77, 77, 0.1); }
 
 /* --- Login Page --- */
 .login-screen {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--bg-dark);
+  padding: 1rem;
 }
 .login-card {
+  width: 100%;
+  max-width: 400px;
   text-align: center;
   background: var(--bg-card);
   padding: 3rem;
@@ -115,7 +138,7 @@ body {
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 /* --- General Page Styling --- */
-.page-container { max-width: 900px; margin: 0 auto; }
+.page-container { max-width: 1000px; margin: 0 auto; width: 100%; }
 .card { background-color: var(--bg-card); padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem; }
 
 /* --- Dashboard Specific --- */
@@ -123,15 +146,18 @@ body {
   background-color: var(--bg-card);
   border: 2px dashed var(--border);
   border-radius: 12px;
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
   margin-bottom: 2rem;
+  transition: border-color 0.2s;
 }
+.upload-box:hover { border-color: var(--primary); }
 
 input[type="file"] { display: none; }
 .custom-file-upload {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 1rem 2rem;
   background-color: #333;
@@ -144,56 +170,112 @@ input[type="file"] { display: none; }
 
 .controls-row {
   display: flex;
+  flex-wrap: wrap; /* Allows wrapping on small screens */
   gap: 1rem;
   justify-content: center;
   margin-top: 1rem;
 }
 
-.lang-select { padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 6px; }
-.btn-primary { padding: 0.8rem 1.5rem; background: var(--primary); border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; }
+.lang-select { padding: 0.8rem; background: #222; border: 1px solid #444; color: white; border-radius: 6px; min-width: 150px; }
+.btn-primary { padding: 0.8rem 1.5rem; background: var(--primary); border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+.btn-primary:hover { background: var(--primary-hover); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-.text-card { background: #252525; padding: 1rem; border-radius: 8px; }
-.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-.tag { background: #333; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
-.tag small { color: var(--primary); margin-left: 5px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+.text-card { background: #252525; padding: 1.5rem; border-radius: 8px; height: 100%; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+.tag { background: #333; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.85rem; display: flex; align-items: center; }
+.tag small { color: var(--primary); margin-left: 6px; font-weight: bold; }
 
-.setting-item { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+.setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
+.setting-item:last-child { border-bottom: none; }
 
 
+/* =================================================================
+   🚀 RESPONSIVE MEDIA QUERIES
+   ================================================================= */
 
-/* ===========================
-   📱 PHONE (small screens)
-   =========================== */
-@media (max-width: 600px) {
-
+/* 📱 MOBILE PHONES (Portrait & Small Landscape)
+   Break at 768px (Standard Tablet/Mobile Boundary) */
+@media (max-width: 768px) {
+  
+  /* Stack layout vertically */
   .app-shell {
-    flex-direction: column;   /* Stack sidebar on top */
-    height: auto;
+    flex-direction: column;
   }
 
+  /* Turn Sidebar into Top Navigation Bar */
   .sidebar {
     width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 0.5rem 1rem;
+    height: auto;
+    flex-direction: row; /* Horizontal layout */
+    align-items: center;
+    padding: 0.8rem 1rem;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    justify-content: space-between;
   }
 
+  /* Logo adjustment for top bar */
+  .logo-area h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  /* Scrollable horizontal menu */
   .nav-menu {
     flex-direction: row;
+    overflow-x: auto; /* Allow horizontal scroll */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 0.5rem;
+    align-items: center;
+    /* Hide scrollbar visually but keep functionality */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+  }
+  .nav-menu::-webkit-scrollbar { display: none; }
+
+  .nav-item {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  /* On mobile, maybe hide text labels if icons exist, 
+     or keep text small. Here we reduce padding. */
+  .nav-item:hover { transform: none; }
+
+  /* Hide Logout on top bar to save space, 
+     or move it to the very end of the scroll */
+  .logout-area {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 0.5rem;
+  }
+  
+  .logout-btn span { display: none; } /* Hide "Logout" text, show icon only */
+
+  /* Main Content Adjustments */
+  .main-content {
+    padding: 1rem; /* Less padding on mobile */
+  }
+
+  /* Stack Grids */
+  .grid-2 {
+    grid-template-columns: 1fr; /* 1 Column */
     gap: 1rem;
   }
 
-  .main-content {
-    padding: 1rem;
+  /* Adjust Controls */
+  .controls-row {
+    flex-direction: column;
+    width: 100%;
   }
-
-  .grid-2 {
-    grid-template-columns: 1fr; /* Stack items */
+  
+  .lang-select, .btn-primary, .custom-file-upload {
+    width: 100%; /* Full width buttons/inputs */
   }
 
   .upload-box {
@@ -201,51 +283,50 @@ input[type="file"] { display: none; }
   }
 }
 
-
-/* ===========================
-   💻 LAPTOP (medium screens)
-   600px – 1440px
-   =========================== */
-@media (min-width: 601px) and (max-width: 1440px) {
-  .sidebar {
-    width: 220px; /* Slightly smaller for mid-size screens */
+/* 💻 TABLET / SMALL LAPTOP (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --sidebar-width: 200px; /* Slimmer sidebar */
   }
 
   .main-content {
-    padding: 2rem;
+    padding: 1.5rem;
   }
 
-  .grid-2 {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-}
-
-
-/* ===========================
-   🖥 PROJECTOR / LARGE SCREENS
-   1440px+
-   =========================== */
-@media (min-width: 1441px) {
-
-  .sidebar {
-    width: 300px; /* More spacious sidebar */
-  }
-
-  .main-content {
-    padding: 3rem 4rem; /* More white space for big screens */
-  }
-
-  .page-container {
-    max-width: 1500px; /* Expand readable area */
+  .nav-item {
+    font-size: 0.9rem;
+    padding: 0.8rem 0.5rem;
   }
 
   .upload-box {
-    padding: 3rem;
+    padding: 2rem;
+  }
+}
+
+/* 🖥️ LARGE SCREENS / PROJECTORS (1441px +) */
+@media (min-width: 1441px) {
+  :root {
+    --sidebar-width: 320px;
+  }
+
+  body {
+    font-size: 18px; /* Slightly larger text for reading from distance */
+  }
+
+  .page-container {
+    max-width: 1400px; /* Use more screen real estate */
+  }
+
+  .main-content {
+    padding: 4rem;
   }
 
   .grid-2 {
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
+  }
+  
+  .upload-box {
+    padding: 4rem;
+    border-width: 3px;
   }
 }
