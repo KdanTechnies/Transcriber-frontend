@@ -160,3 +160,92 @@ input[type="file"] { display: none; }
 .tag small { color: var(--primary); margin-left: 5px; }
 
 .setting-item { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+
+
+
+/* ===========================
+   📱 PHONE (small screens)
+   =========================== */
+@media (max-width: 600px) {
+
+  .app-shell {
+    flex-direction: column;   /* Stack sidebar on top */
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-menu {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr; /* Stack items */
+  }
+
+  .upload-box {
+    padding: 1.5rem;
+  }
+}
+
+
+/* ===========================
+   💻 LAPTOP (medium screens)
+   600px – 1440px
+   =========================== */
+@media (min-width: 601px) and (max-width: 1440px) {
+  .sidebar {
+    width: 220px; /* Slightly smaller for mid-size screens */
+  }
+
+  .main-content {
+    padding: 2rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+
+/* ===========================
+   🖥 PROJECTOR / LARGE SCREENS
+   1440px+
+   =========================== */
+@media (min-width: 1441px) {
+
+  .sidebar {
+    width: 300px; /* More spacious sidebar */
+  }
+
+  .main-content {
+    padding: 3rem 4rem; /* More white space for big screens */
+  }
+
+  .page-container {
+    max-width: 1500px; /* Expand readable area */
+  }
+
+  .upload-box {
+    padding: 3rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
