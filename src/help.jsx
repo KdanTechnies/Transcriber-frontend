@@ -76,7 +76,7 @@ const Help = () => {
                 </div>
                 <div className="contact-row">
                     <span className="label">Email Support:</span>
-                    <a href="mailto:support@transcriber.com" className="contact-link">support@transcriber.com</a>
+                    <a href="danielfrosh22@gmail.com" className="contact-link">danielfrosh22@gmail.com</a>
                 </div>
                 <div className="contact-row">
                     <span className="label">Office Hours:</span>
